@@ -1,21 +1,32 @@
 import './App.css';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+
 import Note from './Note';
+import api from './ConfigAxios'
 
 export default function Notes() {
     const [show, setShow] = useState(false);
     const [noteList, setNoteList] = useState([]);
 
-    function saveNote(){
+    async function GetAll() {
+        var res = await api.get('/notes');
+        setNoteList(res.data);
+    }
+
+    useEffect(() => {
+        GetAll();
+    }, [0])
+
+    async function saveNote(){
         var note = {
             date: document.getElementById("inputDate").value,
             title: document.getElementById("inputTitle").value,
             description: document.getElementById("inputDescription").value
         }
 
-        var copy = [...noteList];
-        copy.push(note);
-        setNoteList(copy);
+        await api.post('/notes', note);
+        GetAll();
+
         setShow(false);
     }
 

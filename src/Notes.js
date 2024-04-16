@@ -9,7 +9,7 @@ export default function Notes() {
     const [noteList, setNoteList] = useState([]);
 
     async function GetAll() {
-        var res = await api.get('/notes');
+        var res = await api.get('/Notes');
         setNoteList(res.data);
     }
 
